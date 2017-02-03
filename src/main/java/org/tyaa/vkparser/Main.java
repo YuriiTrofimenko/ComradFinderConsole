@@ -49,7 +49,8 @@ public class Main
         //перебираем
         for (int i = 0; i < usersIds.length(); i++) {
             
-            String userId = usersIds.getString(i);
+            String userId = usersIds.get(i).toString();
+            //out.println(usersIds.get(i));
 
             jsonString = jsonFetcher.fetchByUrl(
                 "https://api.vk.com/method/users.get"
@@ -60,8 +61,11 @@ public class Main
             //out.println(jsonString);
 
             vKUser = jsonParser.parseVKUser(jsonString);
+            //out.println(jsonString);
+            //out.println(vKUser);
             
-            interestsList.addAll(Arrays.asList(vKUser.mInterests.split(", ")));
+            if(!vKUser.mInterests.equals(""))
+                interestsList.addAll(Arrays.asList(vKUser.mInterests.split(", ")));
         }
         
         /**/
@@ -77,7 +81,7 @@ public class Main
         freqMap.entrySet().stream()                 // получим стрим пар (слово, частота)
                 .sorted(descendingFrequencyOrder()) // отсортируем
                 .limit(10)                          // возьмем первые 10
-                .map(Map.Entry::getKey)             // из каждой пары возьмем слово
+                .map(Map.Entry::toString)             // из каждой пары возьмем слово
                 .forEach(System.out::println);      // выведем в консоль
         /*out.println(vKUser.mInterests);
         out.println(vKUser.mActivities);
