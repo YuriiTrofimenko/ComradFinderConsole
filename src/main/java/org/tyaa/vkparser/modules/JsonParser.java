@@ -29,9 +29,12 @@ public class JsonParser
 
             // 1. достаем индекс 0
             JSONObject userDataJSONObject = response.getJSONObject(0);
-            vKUser.mInterests = userDataJSONObject.getString("interests");
-            vKUser.mActivities = userDataJSONObject.getString("activities");
-            vKUser.mAbout = userDataJSONObject.getString("about");
+            if(userDataJSONObject.has("interests"))
+                vKUser.mInterests = userDataJSONObject.getString("interests");
+            if(userDataJSONObject.has("activities"))
+                vKUser.mActivities = userDataJSONObject.getString("activities");
+            if(userDataJSONObject.has("about"))
+                vKUser.mAbout = userDataJSONObject.getString("about");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -46,7 +49,7 @@ public class JsonParser
         try {
             JSONObject dataJsonObj = new JSONObject(_jsonString);
             JSONObject response = dataJsonObj.getJSONObject("response");
-            usersIds = dataJsonObj.getJSONArray("users");
+            usersIds = response.getJSONArray("users");
         } catch (JSONException e) {
             e.printStackTrace();
         }

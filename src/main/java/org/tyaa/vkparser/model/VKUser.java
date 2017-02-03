@@ -14,4 +14,11 @@ public class VKUser
     public String mInterests;
     public String mActivities;
     public String mAbout;
+    
+    public VKUser(){
+    
+        mInterests = "";
+        mActivities = "";
+        mAbout = "";
+    }
 }
