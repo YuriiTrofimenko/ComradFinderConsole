@@ -5,6 +5,8 @@
  */
 package org.tyaa.vkparser.modules;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,18 +32,6 @@ public class JsonParser
             vKUser.mInterests = userDataJSONObject.getString("interests");
             vKUser.mActivities = userDataJSONObject.getString("activities");
             vKUser.mAbout = userDataJSONObject.getString("about");
-             
-            // 2. перебираем и выводим контакты каждого друга
-            /*for (int i = 0; i < response.length(); i++) {
-                JSONObject friend = response.getJSONObject(i);
-
-                JSONObject contacts = friend.getJSONObject("contacts");
-
-                String phone = contacts.getString("mobile");
-                String email = contacts.getString("email");
-                String skype = contacts.getString("skype");
-            }*/
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -49,36 +39,18 @@ public class JsonParser
         return vKUser;
     }
     
-    public VKUser parseVKGroup(String _jsonString){
+    public JSONArray parseVKGroup(String _jsonString){
     
-        JSONObject dataJsonObj = null;
-        VKUser vKUser = new VKUser();
+        JSONArray usersIds = null;
 
         try {
-            dataJsonObj = new JSONObject(_jsonString);
-            JSONArray response = dataJsonObj.getJSONArray("response");
-
-            // 1. достаем индекс 0
-            JSONObject userDataJSONObject = response.getJSONObject(0);
-            vKUser.mInterests = userDataJSONObject.getString("interests");
-            vKUser.mActivities = userDataJSONObject.getString("activities");
-            vKUser.mAbout = userDataJSONObject.getString("about");
-             
-            // 2. перебираем и выводим контакты каждого друга
-            /*for (int i = 0; i < response.length(); i++) {
-                JSONObject friend = response.getJSONObject(i);
-
-                JSONObject contacts = friend.getJSONObject("contacts");
-
-                String phone = contacts.getString("mobile");
-                String email = contacts.getString("email");
-                String skype = contacts.getString("skype");
-            }*/
-
+            JSONObject dataJsonObj = new JSONObject(_jsonString);
+            JSONObject response = dataJsonObj.getJSONObject("response");
+            usersIds = dataJsonObj.getJSONArray("users");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         
-        return vKUser;
+        return usersIds;
     }
 }
