@@ -32,6 +32,8 @@ public class Main
      */
     public static void main(String[] args)
     {
+        out.println("***Users model builder***");
+        
         String jsonString = "";
         JsonFetcher jsonFetcher = new JsonFetcher();
         JsonParser jsonParser = new JsonParser();
@@ -66,23 +68,65 @@ public class Main
             
             if(!vKUser.mInterests.equals(""))
                 interestsList.addAll(Arrays.asList(vKUser.mInterests.split(", ")));
+            
+            if(!vKUser.mActivities.equals(""))
+                activitiesList.addAll(Arrays.asList(vKUser.mActivities.split(", ")));
+            
+            if(!vKUser.mAbout.equals(""))
+                aboutList.addAll(Arrays.asList(vKUser.mAbout.split(", ")));
+            
+            out.println("Processed users: " + i);
         }
         
         /**/
-        Iterator<String> wordIterator = interestsList.iterator();
-        Map<String, Integer> freqMap = new HashMap<>();
-        wordIterator.forEachRemaining(s -> freqMap.merge(
+        out.println("Calculating the frequency of words... ");
+        Iterator<String> interestsWordIterator = interestsList.iterator();
+        Map<String, Integer> interestsFreqMap = new HashMap<>();
+        interestsWordIterator.forEachRemaining(s -> interestsFreqMap.merge(
                 s.toLowerCase()
                 , 1
                 , (a, b) -> a + b
             )
         );
         
-        freqMap.entrySet().stream()                 // получим стрим пар (слово, частота)
+        Iterator<String> activitiesWordIterator = activitiesList.iterator();
+        Map<String, Integer> activitiesFreqMap = new HashMap<>();
+        activitiesWordIterator.forEachRemaining(s -> activitiesFreqMap.merge(
+                s.toLowerCase()
+                , 1
+                , (a, b) -> a + b
+            )
+        );
+        
+        Iterator<String> aboutWordIterator = activitiesList.iterator();
+        Map<String, Integer> aboutFreqMap = new HashMap<>();
+        aboutWordIterator.forEachRemaining(s -> aboutFreqMap.merge(
+                s.toLowerCase()
+                , 1
+                , (a, b) -> a + b
+            )
+        );
+        
+        out.println("Output results for interests");
+        interestsFreqMap.entrySet().stream()                 // получим стрим пар (слово, частота)
                 .sorted(descendingFrequencyOrder()) // отсортируем
                 .limit(10)                          // возьмем первые 10
                 .map(Map.Entry::toString)             // из каждой пары возьмем слово
                 .forEach(System.out::println);      // выведем в консоль
+        
+        out.println("Output results for activities");
+        activitiesFreqMap.entrySet().stream()
+                .sorted(descendingFrequencyOrder())
+                .limit(10)
+                .map(Map.Entry::toString)
+                .forEach(System.out::println);
+        
+        out.println("Output results for about");
+        aboutFreqMap.entrySet().stream()
+                .sorted(descendingFrequencyOrder())
+                .limit(10)
+                .map(Map.Entry::toString)
+                .forEach(System.out::println);
         /*out.println(vKUser.mInterests);
         out.println(vKUser.mActivities);
         out.println(vKUser.mAbout);*/
