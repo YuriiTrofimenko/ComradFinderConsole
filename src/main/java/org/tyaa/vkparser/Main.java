@@ -68,7 +68,9 @@ public class Main
             
             if(!vKUser.mInterests.equals("")){
             
-                String tmp = vKUser.mInterests.replaceAll(", ", " ");
+                String tmp = vKUser.mInterests.replace(", ", " ");
+                tmp = tmp.replace("??", "и");
+                tmp = tmp.replace("\n\n", " ");
                 interestsList.addAll(Arrays.asList(tmp.split(" ")));
             }
                 
@@ -76,13 +78,17 @@ public class Main
             if(!vKUser.mActivities.equals("")){
             
                 String tmp = vKUser.mActivities.replaceAll(", ", " ");
+                tmp = tmp.replace("??", "и");
+                tmp = tmp.replace("\n\n", " ");
                 activitiesList.addAll(Arrays.asList(tmp.split(" ")));
             }
                 
             
             if(!vKUser.mAbout.equals("")){
             
-                String tmp = vKUser.mAbout.replaceAll(", ", " ");
+                String tmp = vKUser.mAbout.replace(", ", " ");
+                tmp = tmp.replace("??", "и");
+                tmp = tmp.replace("\n\n", " ");
                 aboutList.addAll(Arrays.asList(tmp.split(" ")));
             }
                 
@@ -110,7 +116,7 @@ public class Main
             )
         );
         
-        Iterator<String> aboutWordIterator = activitiesList.iterator();
+        Iterator<String> aboutWordIterator = aboutList.iterator();
         Map<String, Integer> aboutFreqMap = new HashMap<>();
         aboutWordIterator.forEachRemaining(s -> aboutFreqMap.merge(
                 s.toLowerCase()
