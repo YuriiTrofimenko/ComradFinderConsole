@@ -66,14 +66,26 @@ public class Main
             //out.println(jsonString);
             //out.println(vKUser);
             
-            if(!vKUser.mInterests.equals(""))
-                interestsList.addAll(Arrays.asList(vKUser.mInterests.split(", ")));
+            if(!vKUser.mInterests.equals("")){
             
-            if(!vKUser.mActivities.equals(""))
-                activitiesList.addAll(Arrays.asList(vKUser.mActivities.split(", ")));
+                String tmp = vKUser.mInterests.replaceAll(", ", " ");
+                interestsList.addAll(Arrays.asList(tmp.split(" ")));
+            }
+                
             
-            if(!vKUser.mAbout.equals(""))
-                aboutList.addAll(Arrays.asList(vKUser.mAbout.split(", ")));
+            if(!vKUser.mActivities.equals("")){
+            
+                String tmp = vKUser.mActivities.replaceAll(", ", " ");
+                activitiesList.addAll(Arrays.asList(tmp.split(" ")));
+            }
+                
+            
+            if(!vKUser.mAbout.equals("")){
+            
+                String tmp = vKUser.mAbout.replaceAll(", ", " ");
+                aboutList.addAll(Arrays.asList(tmp.split(" ")));
+            }
+                
             
             out.println("Processed users: " + i);
         }
