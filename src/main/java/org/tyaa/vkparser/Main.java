@@ -121,13 +121,15 @@ public class Main
         
         out.println("Output results for interests");
         interestsFreqMap.entrySet().stream()                 // получим стрим пар (слово, частота)
+                .filter(m -> m.getKey().length() > 3)
                 .sorted(descendingFrequencyOrder()) // отсортируем
                 .limit(10)                          // возьмем первые 10
-                .map(Map.Entry::toString)             // из каждой пары возьмем слово
+                .map(Map.Entry::toString)             // из каждой пары возьмем
                 .forEach(System.out::println);      // выведем в консоль
         
         out.println("Output results for activities");
         activitiesFreqMap.entrySet().stream()
+                .filter(m -> m.getKey().length() > 3)
                 .sorted(descendingFrequencyOrder())
                 .limit(10)
                 .map(Map.Entry::toString)
@@ -135,6 +137,7 @@ public class Main
         
         out.println("Output results for about");
         aboutFreqMap.entrySet().stream()
+                .filter(m -> m.getKey().length() > 3)
                 .sorted(descendingFrequencyOrder())
                 .limit(10)
                 .map(Map.Entry::toString)
