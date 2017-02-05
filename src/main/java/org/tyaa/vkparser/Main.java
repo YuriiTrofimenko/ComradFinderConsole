@@ -133,6 +133,7 @@ public class Main
                 .map(Map.Entry::toString)             // из каждой пары возьмем
                 .forEach(System.out::println);      // выведем в консоль
         
+        out.println("");
         out.println("Output results for activities");
         activitiesFreqMap.entrySet().stream()
                 .filter(m -> m.getKey().length() > 3)
@@ -141,6 +142,7 @@ public class Main
                 .map(Map.Entry::toString)
                 .forEach(System.out::println);
         
+        out.println("");
         out.println("Output results for about");
         aboutFreqMap.entrySet().stream()
                 .filter(m -> m.getKey().length() > 3)
