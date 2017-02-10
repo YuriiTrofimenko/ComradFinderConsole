@@ -32,6 +32,7 @@ public class VKUser
         mPolitical = 0;
         mReligion = "";
         mInspiredBy = "";
+        mPeopleMain = 0;
         mLifeMain = 0;
         mSmoking = 0;
         mAlcohol = 0;
