@@ -43,37 +43,37 @@ public class JsonParser
                 
                 if(personalJSONObject.has("political"))
                     vKUser.setPolitical(
-                        Integer.valueOf(userDataJSONObject.getString("political"))
+                        Integer.valueOf(personalJSONObject.getString("political"))
                     );
                 
                 if(personalJSONObject.has("religion"))
                     vKUser.setReligion(
-                        userDataJSONObject.getString("religion")
+                        personalJSONObject.getString("religion")
                     );
                 
                 if(personalJSONObject.has("inspired_by"))
                     vKUser.setInspiredBy(
-                        userDataJSONObject.getString("inspired_by")
+                        personalJSONObject.getString("inspired_by")
                     );
                 
                 if(personalJSONObject.has("people_main"))
                     vKUser.setPeopleMain(
-                        Integer.valueOf(userDataJSONObject.getString("people_main"))
+                        Integer.valueOf(personalJSONObject.getString("people_main"))
                     );
                 
                 if(personalJSONObject.has("life_main"))
                     vKUser.setLifeMain(
-                        Integer.valueOf(userDataJSONObject.getString("life_main"))
+                        Integer.valueOf(personalJSONObject.getString("life_main"))
                     );
                 
                 if(personalJSONObject.has("smoking"))
                     vKUser.setSmoking(
-                        Integer.valueOf(userDataJSONObject.getString("smoking"))
+                        Integer.valueOf(personalJSONObject.getString("smoking"))
                     );
                 
                 if(personalJSONObject.has("alcohol"))
                     vKUser.setAlcohol(
-                        Integer.valueOf(userDataJSONObject.getString("alcohol"))
+                        Integer.valueOf(personalJSONObject.getString("alcohol"))
                     );
             }
         } catch (JSONException e) {
