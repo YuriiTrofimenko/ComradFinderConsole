@@ -66,27 +66,27 @@ public class Main
             //out.println(jsonString);
             //out.println(vKUser);
             
-            if(!vKUser.mInterests.equals("")){
+            if(!vKUser.getInterests().equals("")){
             
-                String tmp = vKUser.mInterests.replace(", ", " ");
+                String tmp = vKUser.getInterests().replace(", ", " ");
                 tmp = tmp.replace("??", "и");
                 tmp = tmp.replace("\n\n", " ");
                 interestsList.addAll(Arrays.asList(tmp.split(" ")));
             }
                 
             
-            if(!vKUser.mActivities.equals("")){
+            if(!vKUser.getActivities().equals("")){
             
-                String tmp = vKUser.mActivities.replaceAll(", ", " ");
+                String tmp = vKUser.getActivities().replaceAll(", ", " ");
                 tmp = tmp.replace("??", "и");
                 tmp = tmp.replace("\n\n", " ");
                 activitiesList.addAll(Arrays.asList(tmp.split(" ")));
             }
                 
             
-            if(!vKUser.mAbout.equals("")){
+            if(!vKUser.getAbout().equals("")){
             
-                String tmp = vKUser.mAbout.replace(", ", " ");
+                String tmp = vKUser.getAbout().replace(", ", " ");
                 tmp = tmp.replace("??", "и");
                 tmp = tmp.replace("\n\n", " ");
                 aboutList.addAll(Arrays.asList(tmp.split(" ")));
