@@ -43,7 +43,7 @@ public class JsonParser
                 
                 if(personalJSONObject.has("political"))
                     vKUser.setPolitical(
-                        Integer.valueOf(personalJSONObject.getString("political"))
+                        personalJSONObject.getInt("political")
                     );
                 
                 if(personalJSONObject.has("religion"))
@@ -58,22 +58,22 @@ public class JsonParser
                 
                 if(personalJSONObject.has("people_main"))
                     vKUser.setPeopleMain(
-                        Integer.valueOf(personalJSONObject.getString("people_main"))
+                        personalJSONObject.getInt("people_main")
                     );
                 
                 if(personalJSONObject.has("life_main"))
                     vKUser.setLifeMain(
-                        Integer.valueOf(personalJSONObject.getString("life_main"))
+                        personalJSONObject.getInt("life_main")
                     );
                 
                 if(personalJSONObject.has("smoking"))
                     vKUser.setSmoking(
-                        Integer.valueOf(personalJSONObject.getString("smoking"))
+                        personalJSONObject.getInt("smoking")
                     );
                 
                 if(personalJSONObject.has("alcohol"))
                     vKUser.setAlcohol(
-                        Integer.valueOf(personalJSONObject.getString("alcohol"))
+                        personalJSONObject.getInt("alcohol")
                     );
             }
         } catch (JSONException e) {
