@@ -43,6 +43,14 @@ public class Main
         List activitiesList = new ArrayList<>();
         List aboutList = new ArrayList<>();
         
+        List politicalList = new ArrayList<>();
+        List religionList = new ArrayList<>();
+        List inspiredByList = new ArrayList<>();
+        List peopleMainList = new ArrayList<>();
+        List lifeMainList = new ArrayList<>();
+        List smokingList = new ArrayList<>();
+        List alcoholList = new ArrayList<>();
+        
         /**/
         jsonString = jsonFetcher.fetchByUrl(
             "https://api.vk.com/method/groups.getMembers?group_id=tehnokom_su"
@@ -51,6 +59,8 @@ public class Main
         //перебираем
         for (int i = 0; i < usersIds.length(); i++) {
             
+            if (i > 5) break;
+            
             String userId = usersIds.get(i).toString();
             //out.println(usersIds.get(i));
 
@@ -58,7 +68,7 @@ public class Main
                 "https://api.vk.com/method/users.get"
                 +"?user_ids="
                 + userId
-                +"&fields=about,activities,interests"
+                +"&fields=about,activities,interests,personal"
             );
             //out.println(jsonString);
 
@@ -69,7 +79,7 @@ public class Main
             if(!vKUser.getInterests().equals("")){
             
                 String tmp = vKUser.getInterests().replace(", ", " ");
-                tmp = tmp.replace("??", "и");
+                //tmp = tmp.replace("??", "и");
                 tmp = tmp.replace("\n\n", " ");
                 interestsList.addAll(Arrays.asList(tmp.split(" ")));
             }
@@ -78,7 +88,7 @@ public class Main
             if(!vKUser.getActivities().equals("")){
             
                 String tmp = vKUser.getActivities().replaceAll(", ", " ");
-                tmp = tmp.replace("??", "и");
+                //tmp = tmp.replace("??", "и");
                 tmp = tmp.replace("\n\n", " ");
                 activitiesList.addAll(Arrays.asList(tmp.split(" ")));
             }
@@ -87,11 +97,49 @@ public class Main
             if(!vKUser.getAbout().equals("")){
             
                 String tmp = vKUser.getAbout().replace(", ", " ");
-                tmp = tmp.replace("??", "и");
+                //tmp = tmp.replace("??", "и");
                 tmp = tmp.replace("\n\n", " ");
                 aboutList.addAll(Arrays.asList(tmp.split(" ")));
             }
                 
+            if(vKUser.getPolitical() != 0){
+            
+                politicalList.add(vKUser.getPolitical());
+            }
+            
+            if(!vKUser.getReligion().equals("")){
+            
+                String tmp = vKUser.getReligion().replace(", ", " ");
+                tmp = tmp.replace("\n\n", " ");
+                religionList.addAll(Arrays.asList(tmp.split(" ")));
+            }
+            
+            if(!vKUser.getInspiredBy().equals("")){
+            
+                String tmp = vKUser.getInspiredBy().replace(", ", " ");
+                tmp = tmp.replace("\n\n", " ");
+                inspiredByList.addAll(Arrays.asList(tmp.split(" ")));
+            }
+            
+            if(vKUser.getPeopleMain()!= 0){
+            
+                peopleMainList.add(vKUser.getPeopleMain());
+            }
+            
+            if(vKUser.getLifeMain()!= 0){
+            
+                lifeMainList.add(vKUser.getLifeMain());
+            }
+            
+            if(vKUser.getSmoking()!= 0){
+            
+                smokingList.add(vKUser.getSmoking());
+            }
+            
+            if(vKUser.getAlcohol()!= 0){
+            
+                alcoholList.add(vKUser.getAlcohol());
+            }
             
             out.println("Processed users: " + i);
         }
@@ -125,6 +173,69 @@ public class Main
             )
         );
         
+        Iterator<Integer> politicalIndexIterator = politicalList.iterator();
+        Map<Integer, Integer> politicalFreqMap = new HashMap<>();
+        politicalIndexIterator.forEachRemaining(i -> politicalFreqMap.merge(
+                i
+                , 1
+                , (a, b) -> a + b
+            )
+        );
+        
+        Iterator<String> religionWordIterator = religionList.iterator();
+        Map<String, Integer> religionFreqMap = new HashMap<>();
+        religionWordIterator.forEachRemaining(s -> religionFreqMap.merge(
+                s.toLowerCase()
+                , 1
+                , (a, b) -> a + b
+            )
+        );
+        
+        Iterator<String> inspiredByWordIterator = inspiredByList.iterator();
+        Map<String, Integer> inspiredByFreqMap = new HashMap<>();
+        inspiredByWordIterator.forEachRemaining(s -> inspiredByFreqMap.merge(
+                s.toLowerCase()
+                , 1
+                , (a, b) -> a + b
+            )
+        );
+        
+        Iterator<Integer> peopleMainIndexIterator = peopleMainList.iterator();
+        Map<Integer, Integer> peopleMainFreqMap = new HashMap<>();
+        peopleMainIndexIterator.forEachRemaining(i -> peopleMainFreqMap.merge(
+                i
+                , 1
+                , (a, b) -> a + b
+            )
+        );
+        
+        Iterator<Integer> lifeMainIndexIterator = lifeMainList.iterator();
+        Map<Integer, Integer> lifeMainFreqMap = new HashMap<>();
+        lifeMainIndexIterator.forEachRemaining(i -> lifeMainFreqMap.merge(
+                i
+                , 1
+                , (a, b) -> a + b
+            )
+        );
+        
+        Iterator<Integer> smokingIndexIterator = smokingList.iterator();
+        Map<Integer, Integer> smokingFreqMap = new HashMap<>();
+        smokingIndexIterator.forEachRemaining(i -> smokingFreqMap.merge(
+                i
+                , 1
+                , (a, b) -> a + b
+            )
+        );
+        
+        Iterator<Integer> alcoholIndexIterator = alcoholList.iterator();
+        Map<Integer, Integer> alcoholFreqMap = new HashMap<>();
+        alcoholIndexIterator.forEachRemaining(i -> alcoholFreqMap.merge(
+                i
+                , 1
+                , (a, b) -> a + b
+            )
+        );
+        
         out.println("Output results for interests");
         interestsFreqMap.entrySet().stream()                 // получим стрим пар (слово, частота)
                 .filter(m -> m.getKey().length() > 3)
@@ -150,11 +261,57 @@ public class Main
                 .limit(10)
                 .map(Map.Entry::toString)
                 .forEach(System.out::println);
-        /*out.println(vKUser.mInterests);
-        out.println(vKUser.mActivities);
-        out.println(vKUser.mAbout);*/
-        // TODO code application logic here
-        //https://api.vk.com/method/users.get?user_ids=71645&fields=about,activities?user_ids=71645&fields=about,activities,interests
+        
+        out.println("");
+        out.println("Output results for political");
+        politicalFreqMap.entrySet().stream()
+                .sorted(descendingIntFrequencyOrder())
+                .map(Map.Entry::toString)
+                .forEach(System.out::println);
+        
+        out.println("Output results for religion");
+        religionFreqMap.entrySet().stream()
+                .filter(m -> m.getKey().length() > 3)
+                .sorted(descendingFrequencyOrder())
+                .limit(10)
+                .map(Map.Entry::toString)
+                .forEach(System.out::println);
+        
+        out.println("Output results for inspired_by");
+        inspiredByFreqMap.entrySet().stream()
+                .filter(m -> m.getKey().length() > 3)
+                .sorted(descendingFrequencyOrder())
+                .limit(10)
+                .map(Map.Entry::toString)
+                .forEach(System.out::println);
+        
+        out.println("");
+        out.println("Output results for people_main");
+        peopleMainFreqMap.entrySet().stream()
+                .sorted(descendingIntFrequencyOrder())
+                .map(Map.Entry::toString)
+                .forEach(System.out::println);
+        
+        out.println("");
+        out.println("Output results for life_main");
+        lifeMainFreqMap.entrySet().stream()
+                .sorted(descendingIntFrequencyOrder())
+                .map(Map.Entry::toString)
+                .forEach(System.out::println);
+        
+        out.println("");
+        out.println("Output results for smoking");
+        smokingFreqMap.entrySet().stream()
+                .sorted(descendingIntFrequencyOrder())
+                .map(Map.Entry::toString)
+                .forEach(System.out::println);
+        
+        out.println("");
+        out.println("Output results for alcohol");
+        alcoholFreqMap.entrySet().stream()
+                .sorted(descendingIntFrequencyOrder())
+                .map(Map.Entry::toString)
+                .forEach(System.out::println);
     }
     
     // Создание Comparator'а вынесено в отдельный метод, чтобы не загромождать метод main.
@@ -162,6 +319,15 @@ public class Main
         // Нам нужен Comparator, который сначала упорядочивает пары частоте (по убыванию),
         // а затем по слову (в алфавитном порядке). Так и напишем:
         return Comparator.<Map.Entry<String, Integer>>comparingInt(Map.Entry::getValue)
+                .reversed()
+                .thenComparing(Map.Entry::getKey);
+    }
+    
+    // Создание Comparator'а вынесено в отдельный метод, чтобы не загромождать метод main.
+    private static Comparator<Map.Entry<Integer, Integer>> descendingIntFrequencyOrder() {
+        // Нам нужен Comparator, который сначала упорядочивает пары частоте (по убыванию),
+        // а затем по слову (в алфавитном порядке). Так и напишем:
+        return Comparator.<Map.Entry<Integer, Integer>>comparingInt(Map.Entry::getValue)
                 .reversed()
                 .thenComparing(Map.Entry::getKey);
     }

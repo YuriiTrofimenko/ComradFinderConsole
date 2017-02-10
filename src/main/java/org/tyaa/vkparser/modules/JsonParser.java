@@ -35,6 +35,47 @@ public class JsonParser
                 vKUser.setActivities(userDataJSONObject.getString("activities"));
             if(userDataJSONObject.has("about"))
                 vKUser.setAbout(userDataJSONObject.getString("about"));
+            
+            if(userDataJSONObject.has("personal")){
+            
+                JSONObject personalJSONObject =
+                    userDataJSONObject.getJSONObject("personal");
+                
+                if(personalJSONObject.has("political"))
+                    vKUser.setPolitical(
+                        Integer.valueOf(userDataJSONObject.getString("political"))
+                    );
+                
+                if(personalJSONObject.has("religion"))
+                    vKUser.setReligion(
+                        userDataJSONObject.getString("religion")
+                    );
+                
+                if(personalJSONObject.has("inspired_by"))
+                    vKUser.setInspiredBy(
+                        userDataJSONObject.getString("inspired_by")
+                    );
+                
+                if(personalJSONObject.has("people_main"))
+                    vKUser.setPeopleMain(
+                        Integer.valueOf(userDataJSONObject.getString("people_main"))
+                    );
+                
+                if(personalJSONObject.has("life_main"))
+                    vKUser.setLifeMain(
+                        Integer.valueOf(userDataJSONObject.getString("life_main"))
+                    );
+                
+                if(personalJSONObject.has("smoking"))
+                    vKUser.setSmoking(
+                        Integer.valueOf(userDataJSONObject.getString("smoking"))
+                    );
+                
+                if(personalJSONObject.has("alcohol"))
+                    vKUser.setAlcohol(
+                        Integer.valueOf(userDataJSONObject.getString("alcohol"))
+                    );
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
