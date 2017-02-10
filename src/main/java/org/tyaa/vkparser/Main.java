@@ -59,7 +59,7 @@ public class Main
         //перебираем
         for (int i = 0; i < usersIds.length(); i++) {
             
-            if (i > 5) break;
+            //if (i > 5) break;
             
             String userId = usersIds.get(i).toString();
             //out.println(usersIds.get(i));
