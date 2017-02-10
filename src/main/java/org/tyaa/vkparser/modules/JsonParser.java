@@ -30,11 +30,11 @@ public class JsonParser
             // 1. достаем индекс 0
             JSONObject userDataJSONObject = response.getJSONObject(0);
             if(userDataJSONObject.has("interests"))
-                vKUser.mInterests = userDataJSONObject.getString("interests");
+                vKUser.setInterests(userDataJSONObject.getString("interests"));
             if(userDataJSONObject.has("activities"))
-                vKUser.mActivities = userDataJSONObject.getString("activities");
+                vKUser.setActivities(userDataJSONObject.getString("activities"));
             if(userDataJSONObject.has("about"))
-                vKUser.mAbout = userDataJSONObject.getString("about");
+                vKUser.setAbout(userDataJSONObject.getString("about"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
