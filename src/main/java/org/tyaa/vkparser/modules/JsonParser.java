@@ -97,4 +97,19 @@ public class JsonParser
         
         return usersIds;
     }
+    
+    public JSONArray parseVKSearch(String _jsonString){
+    
+        JSONArray usersIds = null;
+
+        try {
+            JSONObject responseJSONObject = new JSONObject(_jsonString);
+            //JSONObject response = dataJsonObj.getJSONObject("response");
+            usersIds = responseJSONObject.getJSONArray("response");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        
+        return usersIds;
+    }
 }

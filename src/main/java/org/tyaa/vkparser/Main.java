@@ -32,6 +32,56 @@ public class Main
      */
     public static void main(String[] args)
     {
+        findByModel();
+    }
+    
+    public static void findByModel()
+    {
+        out.println("*** Find users by model ***");
+        
+        String jsonString = "";
+        JsonFetcher jsonFetcher = new JsonFetcher();
+        JsonParser jsonParser = new JsonParser();
+        
+        jsonString = jsonFetcher.fetchByUrl(
+            "https://api.vk.com/method/users.search?access_token=5e8976369e5ba9ffa778029ccd5792e36b99c236870d62f1e4b442af1b5bdd1c360d25fa264daafb6288d&country=2&count=5"
+        );
+        
+        JSONArray usersIds = jsonParser.parseVKSearch(jsonString);
+        
+        //out.println(jsonString);
+        
+        for (int i = 1; i < usersIds.length(); i++) {
+            
+            //if (i > 5) break;
+            
+            String userId = usersIds.get(i).toString();
+            out.println(userId);
+
+            /*jsonString = jsonFetcher.fetchByUrl(
+                "https://api.vk.com/method/users.get"
+                +"?user_ids="
+                + userId
+                +"&fields=about,activities,interests,personal"
+            );
+            //out.println(jsonString);
+
+            vKUser = jsonParser.parseVKUser(jsonString);
+            //out.println(jsonString);
+            //out.println(vKUser);
+            
+            if(!vKUser.getInterests().equals("")){
+            
+                String tmp = vKUser.getInterests().replace(", ", " ");
+                //tmp = tmp.replace("??", "и");
+                tmp = tmp.replace("\n\n", " ");
+                interestsList.addAll(Arrays.asList(tmp.split(" ")));
+            }*/
+        }
+    }
+    
+    public static void buildModel()
+    {
         out.println("***Users model builder***");
         
         String jsonString = "";
