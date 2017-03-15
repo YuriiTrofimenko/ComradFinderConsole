@@ -5,6 +5,9 @@
  */
 package org.tyaa.vkparser;
 
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.xml.stream.XMLStreamException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.tyaa.vkparser.model.TypicalWords;
@@ -21,6 +25,7 @@ import org.tyaa.vkparser.model.VKUser;
 
 import org.tyaa.vkparser.modules.JsonFetcher;
 import org.tyaa.vkparser.modules.JsonParser;
+import org.tyaa.vkparser.modules.XmlExporter;
 
 /**
  *
@@ -454,6 +459,17 @@ public class Main
         typicalWords.mAlcoholMap.forEach(
             (k,v) -> System.out.println("key: " + k + " value: " + v)
         );
+        
+        //
+        try {
+            XmlExporter.TypicalWordsToXml(typicalWords, "TypicalWords.xml");//new FileWriter(,"UTF-8"));
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+        catch(XMLStreamException e) {
+            e.printStackTrace();
+        }
     }
     
     // Создание Comparator'а вынесено в отдельный метод, чтобы не загромождать метод main.

@@ -35,7 +35,7 @@ public class JsonFetcher
             InputStream inputStream = urlConnection.getInputStream();
             StringBuffer buffer = new StringBuffer();
 
-            reader = new BufferedReader(new InputStreamReader(inputStream));
+            reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 
             String line;
             while ((line = reader.readLine()) != null) {
@@ -44,7 +44,7 @@ public class JsonFetcher
 
             jsonString = HtmlEscape.unescapeHtml(buffer.toString());
             //byte[] b = jsonString.getBytes("UTF-8");
-            jsonString = new String(jsonString.getBytes("Cp1251"),"UTF-8");
+            //jsonString = new String(jsonString.getBytes("Cp1251"),"UTF-8");
 
         } catch (Exception e) {
             e.printStackTrace();
