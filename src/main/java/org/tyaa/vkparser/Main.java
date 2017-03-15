@@ -461,8 +461,8 @@ public class Main
         // Нам нужен Comparator, который сначала упорядочивает пары частоте (по убыванию),
         // а затем по слову (в алфавитном порядке). Так и напишем:
         return Comparator.<Map.Entry<String, Integer>>comparingInt(Map.Entry::getValue)
-                .reversed()
-                .thenComparing(Map.Entry::getKey);
+                .reversed();
+                //.thenComparing(Map.Entry::getKey);
     }
     
     // Создание Comparator'а вынесено в отдельный метод, чтобы не загромождать метод main.
@@ -470,7 +470,7 @@ public class Main
         // Нам нужен Comparator, который сначала упорядочивает пары частоте (по убыванию),
         // а затем по слову (в алфавитном порядке). Так и напишем:
         return Comparator.<Map.Entry<Integer, Integer>>comparingInt(Map.Entry::getValue)
-                .reversed()
-                .thenComparing(Map.Entry::getKey);
+                .reversed();
+                //.thenComparing(Map.Entry::getKey);
     }
 }
