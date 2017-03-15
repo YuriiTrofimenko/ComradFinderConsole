@@ -100,16 +100,17 @@ public class JsonParser
     
     public JSONArray parseVKSearch(String _jsonString){
     
-        JSONArray usersIds = null;
+        JSONArray usersItems = null;
 
         try {
             JSONObject responseJSONObject = new JSONObject(_jsonString);
-            //JSONObject response = dataJsonObj.getJSONObject("response");
-            usersIds = responseJSONObject.getJSONArray("response");
+            //Get JSONArray of elements like
+            //{"uid":292243967,"last_name":"Брежнева","first_name":"Вера"}
+            usersItems = responseJSONObject.getJSONArray("response");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         
-        return usersIds;
+        return usersItems;
     }
 }

@@ -13,8 +13,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.tyaa.vkparser.model.TypicalWords;
 import org.tyaa.vkparser.model.VKUser;
 
 import org.tyaa.vkparser.modules.JsonFetcher;
@@ -32,7 +34,8 @@ public class Main
      */
     public static void main(String[] args)
     {
-        findByModel();
+        //findByModel();
+        buildModel();
     }
     
     public static void findByModel()
@@ -47,15 +50,18 @@ public class Main
             "https://api.vk.com/method/users.search?access_token=5e8976369e5ba9ffa778029ccd5792e36b99c236870d62f1e4b442af1b5bdd1c360d25fa264daafb6288d&country=2&count=5"
         );
         
-        JSONArray usersIds = jsonParser.parseVKSearch(jsonString);
+        JSONArray usersItems = jsonParser.parseVKSearch(jsonString);
         
         //out.println(jsonString);
         
-        for (int i = 1; i < usersIds.length(); i++) {
+        for (int i = 1; i < usersItems.length(); i++) {
             
             //if (i > 5) break;
             
-            String userId = usersIds.get(i).toString();
+            //String userId = usersItems.get(i).toString();
+            Integer userId =
+                (Integer)((JSONObject)usersItems.get(i)).get("uid");
+                //(JSONObject)((JSONArray)usersItems.get(i)).get(0);
             out.println(userId);
 
             /*jsonString = jsonFetcher.fetchByUrl(
@@ -286,82 +292,168 @@ public class Main
             )
         );
         
+        /*Collect couples for the TypicalWords model*/
+        
+        TypicalWords typicalWords = new TypicalWords();
+        
+        typicalWords.mInterestMap = interestsFreqMap.entrySet().stream()                 // получим стрим пар (слово, частота)
+                .filter(m -> m.getKey().length() > 3)
+                .sorted(descendingFrequencyOrder()) // отсортируем
+                .limit(10)                          // возьмем первые 10
+                .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));      // выведем в консоль
+        
+        typicalWords.mActivityMap = activitiesFreqMap.entrySet().stream()
+                .filter(m -> m.getKey().length() > 3)
+                .sorted(descendingFrequencyOrder())
+                .limit(10)
+                .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));
+        
+        typicalWords.mAboutMap = aboutFreqMap.entrySet().stream()
+                .filter(m -> m.getKey().length() > 3)
+                .sorted(descendingFrequencyOrder())
+                .limit(10)
+                .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));
+        
+        typicalWords.mPoliticalMap = politicalFreqMap.entrySet().stream()
+                .sorted(descendingIntFrequencyOrder())
+                .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));
+        
+        typicalWords.mReligionMap = religionFreqMap.entrySet().stream()
+                .filter(m -> m.getKey().length() > 3)
+                .sorted(descendingFrequencyOrder())
+                .limit(10)
+                .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));
+        
+        typicalWords.mInspiredByMap = inspiredByFreqMap.entrySet().stream()
+                .filter(m -> m.getKey().length() > 3)
+                .sorted(descendingFrequencyOrder())
+                .limit(10)
+                .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));
+        
+        typicalWords.mPeopleMainMap = peopleMainFreqMap.entrySet().stream()
+                .sorted(descendingIntFrequencyOrder())
+                .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));
+        
+        typicalWords.mLifeMainMap = lifeMainFreqMap.entrySet().stream()
+                .sorted(descendingIntFrequencyOrder())
+                .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));
+        
+        typicalWords.mSmokingMap = smokingFreqMap.entrySet().stream()
+                .sorted(descendingIntFrequencyOrder())
+                .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));
+        
+        typicalWords.mAlcoholMap = alcoholFreqMap.entrySet().stream()
+                .sorted(descendingIntFrequencyOrder())
+                .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));
+        
+        /*End*/
+        
         out.println("Output results for interests");
-        interestsFreqMap.entrySet().stream()                 // получим стрим пар (слово, частота)
+        /*interestsFreqMap.entrySet().stream()                 // получим стрим пар (слово, частота)
                 .filter(m -> m.getKey().length() > 3)
                 .sorted(descendingFrequencyOrder()) // отсортируем
                 .limit(10)                          // возьмем первые 10
                 .map(Map.Entry::toString)             // из каждой пары возьмем
-                .forEach(System.out::println);      // выведем в консоль
+                .forEach(System.out::println);      // выведем в консоль*/
+        typicalWords.mInterestMap.forEach(
+            (k,v) -> System.out.println("key: " + k + " value: " + v)
+        );
         
         out.println("");
         out.println("Output results for activities");
-        activitiesFreqMap.entrySet().stream()
+        /*activitiesFreqMap.entrySet().stream()
                 .filter(m -> m.getKey().length() > 3)
                 .sorted(descendingFrequencyOrder())
                 .limit(10)
                 .map(Map.Entry::toString)
-                .forEach(System.out::println);
+                .forEach(System.out::println);*/
+        typicalWords.mActivityMap.forEach(
+            (k,v) -> System.out.println("key: " + k + " value: " + v)
+        );
         
         out.println("");
         out.println("Output results for about");
-        aboutFreqMap.entrySet().stream()
+        /*aboutFreqMap.entrySet().stream()
                 .filter(m -> m.getKey().length() > 3)
                 .sorted(descendingFrequencyOrder())
                 .limit(10)
                 .map(Map.Entry::toString)
-                .forEach(System.out::println);
+                .forEach(System.out::println);*/
+        typicalWords.mAboutMap.forEach(
+            (k,v) -> System.out.println("key: " + k + " value: " + v)
+        );
         
         out.println("");
         out.println("Output results for political");
-        politicalFreqMap.entrySet().stream()
+        /*politicalFreqMap.entrySet().stream()
                 .sorted(descendingIntFrequencyOrder())
                 .map(Map.Entry::toString)
-                .forEach(System.out::println);
+                .forEach(System.out::println);*/
+        typicalWords.mPoliticalMap.forEach(
+            (k,v) -> System.out.println("key: " + k + " value: " + v)
+        );
         
         out.println("Output results for religion");
-        religionFreqMap.entrySet().stream()
+        /*religionFreqMap.entrySet().stream()
                 .filter(m -> m.getKey().length() > 3)
                 .sorted(descendingFrequencyOrder())
                 .limit(10)
                 .map(Map.Entry::toString)
-                .forEach(System.out::println);
+                .forEach(System.out::println);*/
+        typicalWords.mReligionMap.forEach(
+            (k,v) -> System.out.println("key: " + k + " value: " + v)
+        );
         
         out.println("Output results for inspired_by");
-        inspiredByFreqMap.entrySet().stream()
+        /*inspiredByFreqMap.entrySet().stream()
                 .filter(m -> m.getKey().length() > 3)
                 .sorted(descendingFrequencyOrder())
                 .limit(10)
                 .map(Map.Entry::toString)
-                .forEach(System.out::println);
+                .forEach(System.out::println);*/
+        typicalWords.mInspiredByMap.forEach(
+            (k,v) -> System.out.println("key: " + k + " value: " + v)
+        );
         
         out.println("");
         out.println("Output results for people_main");
-        peopleMainFreqMap.entrySet().stream()
+        /*peopleMainFreqMap.entrySet().stream()
                 .sorted(descendingIntFrequencyOrder())
                 .map(Map.Entry::toString)
-                .forEach(System.out::println);
+                .forEach(System.out::println);*/
+        typicalWords.mPeopleMainMap.forEach(
+            (k,v) -> System.out.println("key: " + k + " value: " + v)
+        );
         
         out.println("");
         out.println("Output results for life_main");
-        lifeMainFreqMap.entrySet().stream()
+        /*lifeMainFreqMap.entrySet().stream()
                 .sorted(descendingIntFrequencyOrder())
                 .map(Map.Entry::toString)
-                .forEach(System.out::println);
+                .forEach(System.out::println);*/
+        typicalWords.mLifeMainMap.forEach(
+            (k,v) -> System.out.println("key: " + k + " value: " + v)
+        );
         
         out.println("");
         out.println("Output results for smoking");
-        smokingFreqMap.entrySet().stream()
+        /*smokingFreqMap.entrySet().stream()
                 .sorted(descendingIntFrequencyOrder())
                 .map(Map.Entry::toString)
-                .forEach(System.out::println);
+                .forEach(System.out::println);*/
+        typicalWords.mSmokingMap.forEach(
+            (k,v) -> System.out.println("key: " + k + " value: " + v)
+        );
         
         out.println("");
         out.println("Output results for alcohol");
-        alcoholFreqMap.entrySet().stream()
+        /*alcoholFreqMap.entrySet().stream()
                 .sorted(descendingIntFrequencyOrder())
                 .map(Map.Entry::toString)
-                .forEach(System.out::println);
+                .forEach(System.out::println);*/
+        typicalWords.mAlcoholMap.forEach(
+            (k,v) -> System.out.println("key: " + k + " value: " + v)
+        );
     }
     
     // Создание Comparator'а вынесено в отдельный метод, чтобы не загромождать метод main.
