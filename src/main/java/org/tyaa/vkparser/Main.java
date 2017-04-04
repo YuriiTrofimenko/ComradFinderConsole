@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.xml.stream.XMLStreamException;
 import org.json.JSONArray;
@@ -26,6 +28,7 @@ import org.tyaa.vkparser.model.VKUser;
 import org.tyaa.vkparser.modules.JsonFetcher;
 import org.tyaa.vkparser.modules.JsonParser;
 import org.tyaa.vkparser.modules.XmlExporter;
+import org.tyaa.vkparser.modules.XmlImporter;
 
 /**
  *
@@ -39,8 +42,15 @@ public class Main
      */
     public static void main(String[] args)
     {
-        findByModel();
         //buildModel();
+        //findByModel();
+        try {
+            XmlImporter.getTypicalWords("TypicalWords.xml");
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (XMLStreamException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public static void findByModel()
