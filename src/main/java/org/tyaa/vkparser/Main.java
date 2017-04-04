@@ -39,8 +39,8 @@ public class Main
      */
     public static void main(String[] args)
     {
-        //findByModel();
-        buildModel();
+        findByModel();
+        //buildModel();
     }
     
     public static void findByModel()
