@@ -44,19 +44,15 @@ public class Main
     {
         //buildModel();
         //findByModel();
-        try {
-            XmlImporter.getTypicalWords("TypicalWords.xml");
-        } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (XMLStreamException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     public static void findByModel()
     {
         out.println("*** Find users by model ***");
         
+        VKUser vKUser = null;
+        
+        /*Получаем из соцсети список id пользователей из определенной страны*/
         String jsonString = "";
         JsonFetcher jsonFetcher = new JsonFetcher();
         JsonParser jsonParser = new JsonParser();
@@ -66,39 +62,63 @@ public class Main
         );
         
         JSONArray usersItems = jsonParser.parseVKSearch(jsonString);
+        /************************************************/
+        
+        /*Читаем набор типичных слов из файла XML в Java объект*/
+        
+        TypicalWords typicalWords = new TypicalWords();
+        
+        try {
+            typicalWords = XmlImporter.getTypicalWords("TypicalWords.xml");
+        } catch (IOException | XMLStreamException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if (typicalWords != null) {
+            //Перебираем все JSONObject с краткой информацией о найденных пользователях
+            for (int i = 1; i < usersItems.length(); i++) {
+
+                //if (i > 5) break;
+                int score = 0;
+
+                //Получаем id текущего пользователя
+                Integer userId =
+                    (Integer)((JSONObject)usersItems.get(i)).get("uid");
+                    //(JSONObject)((JSONArray)usersItems.get(i)).get(0);
+                //out.println(userId);
+
+                jsonString = jsonFetcher.fetchByUrl(
+                    "https://api.vk.com/method/users.get"
+                    +"?user_ids="
+                    + userId
+                    +"&fields=about,activities,interests,personal"
+                );
+                //out.println(jsonString);
+
+                vKUser = jsonParser.parseVKUser(jsonString);
+                //out.println(jsonString);
+                //out.println(vKUser);
+                
+                for (Map.Entry<String, Integer> interestItem : typicalWords.mInterestMap.entrySet()) {
+                    
+                    if (vKUser.getInterests().contains(interestItem.getKey())) {
+                        score++;
+                    }
+                }
+
+                /*if(!vKUser.getInterests().equals("")){
+
+                    String tmp = vKUser.getInterests().replace(", ", " ");
+                    //tmp = tmp.replace("??", "и");
+                    tmp = tmp.replace("\n\n", " ");
+                    interestsList.addAll(Arrays.asList(tmp.split(" ")));
+                }*/
+            }
+        }
         
         //out.println(jsonString);
         
-        for (int i = 1; i < usersItems.length(); i++) {
-            
-            //if (i > 5) break;
-            
-            //String userId = usersItems.get(i).toString();
-            Integer userId =
-                (Integer)((JSONObject)usersItems.get(i)).get("uid");
-                //(JSONObject)((JSONArray)usersItems.get(i)).get(0);
-            out.println(userId);
-
-            /*jsonString = jsonFetcher.fetchByUrl(
-                "https://api.vk.com/method/users.get"
-                +"?user_ids="
-                + userId
-                +"&fields=about,activities,interests,personal"
-            );
-            //out.println(jsonString);
-
-            vKUser = jsonParser.parseVKUser(jsonString);
-            //out.println(jsonString);
-            //out.println(vKUser);
-            
-            if(!vKUser.getInterests().equals("")){
-            
-                String tmp = vKUser.getInterests().replace(", ", " ");
-                //tmp = tmp.replace("??", "и");
-                tmp = tmp.replace("\n\n", " ");
-                interestsList.addAll(Arrays.asList(tmp.split(" ")));
-            }*/
-        }
+        
     }
     
     public static void buildModel()
