@@ -42,8 +42,15 @@ public class Main
      */
     public static void main(String[] args)
     {
-        //buildModel();
-        //findByModel();
+        try {
+            //buildModel();
+            //findByModel();
+            XmlImporter.getTypicalWords("TypicalWords.xml");
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (XMLStreamException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public static void findByModel()

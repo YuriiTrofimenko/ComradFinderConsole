@@ -67,6 +67,41 @@ public class XmlImporter
                     
                 //}
                 System.out.println(currentNode.getNodeName());
+                String infoItemName = currentNode.getNodeName();
+                NodeList infoItemChildNodes = currentNode.getChildNodes();
+                
+                switch(infoItemName)
+                {
+                    case "interest":{
+                        //typicalWords.mInterestMap.put(_filePath, Integer.MIN_VALUE);
+                        for (int i = 0; i < infoItemChildNodes.getLength(); i++) {
+                            
+                            if (infoItemChildNodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                                
+                                if (infoItemChildNodes.item(i).getNodeName().equals("variant")) {
+                                    
+                                    NodeList variantChildNodes =
+                                        infoItemChildNodes.item(i).getChildNodes();
+                                    for (int j = 0; j < variantChildNodes.getLength(); j++) {
+                                    
+                                        if (variantChildNodes.item(j).getNodeType() == Node.ELEMENT_NODE) {
+                                        
+                                            if (variantChildNodes.item(j).getNodeName().equals("value")) {
+                                            
+                                                System.out.println("value = " + variantChildNodes.item(j).getTextContent());
+                                            } else if (variantChildNodes.item(j).getNodeName().equals("count")) {
+                                            
+                                                System.out.println("count = " + variantChildNodes.item(j).getTextContent());
+                                            }
+                                        }
+                                    }
+                                }
+                                //rootChildList.add(rootChildNodes.item(i));
+                            }
+                        }
+                    }
+                    default:{}
+                }
             }
             
         } catch (Exception e) {
