@@ -45,7 +45,18 @@ public class Main
         try {
             //buildModel();
             //findByModel();
-            XmlImporter.getTypicalWords("TypicalWords.xml");
+            TypicalWords typicalWords =
+                XmlImporter.getTypicalWords("TypicalWords.xml");
+            
+            for (Map.Entry<String, Integer> interestItem : typicalWords.mInterestMap.entrySet()) {
+
+                out.println(interestItem.getKey() + "  " + interestItem.getValue());
+            }
+            for (Map.Entry<Integer, Integer> alcoholItem : typicalWords.mAlcoholMap.entrySet()) {
+
+                out.println(alcoholItem.getKey() + "  " + alcoholItem.getValue());
+            }
+            
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (XMLStreamException ex) {

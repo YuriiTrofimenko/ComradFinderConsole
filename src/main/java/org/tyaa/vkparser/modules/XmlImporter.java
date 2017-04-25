@@ -22,6 +22,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 import java.util.ArrayList;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -29,11 +31,16 @@ import java.util.ArrayList;
  */
 public class XmlImporter
 {
-    public static TypicalWords getTypicalWords(String _filePath) throws IOException, XMLStreamException {
-        
-        TypicalWords typicalWords = new TypicalWords();
-        
-        try {
+    private static TypicalWords mTypicalWords;
+    
+    static {
+    
+        mTypicalWords = new TypicalWords();
+    }
+    
+    public static TypicalWords getTypicalWords(String _filePath) throws IOException, XMLStreamException, SAXException, ParserConfigurationException {
+                
+        //try {
             
             File fXmlFile = new File(_filePath);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -70,43 +77,135 @@ public class XmlImporter
                 String infoItemName = currentNode.getNodeName();
                 NodeList infoItemChildNodes = currentNode.getChildNodes();
                 
-                switch(infoItemName)
-                {
-                    case "interest":{
-                        //typicalWords.mInterestMap.put(_filePath, Integer.MIN_VALUE);
-                        for (int i = 0; i < infoItemChildNodes.getLength(); i++) {
+                populateField(infoItemName, infoItemChildNodes);
+            }
+            
+        //} catch (Exception e) {
+            
+            //System.out.println(e);
+        //}
+        
+        return mTypicalWords;
+    }
+    
+    //Внутренний метод для заполнения того поля объекта TypicalWords,
+    //имя которого передано в качестве аргумента
+    private static void populateField(String _field_name, NodeList _infoItemChildNodes){
+    
+        for (int i = 0; i < _infoItemChildNodes.getLength(); i++) {
+
+            if (_infoItemChildNodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
+
+                if (_infoItemChildNodes.item(i).getNodeName().equals("variant")) {
+
+                    NodeList variantChildNodes =
+                        _infoItemChildNodes.item(i).getChildNodes();
+                    
+                    String currentValue = "";
+                    String currentCount = "";
+                    
+                    for (int j = 0; j < variantChildNodes.getLength(); j++) {
+
+                        if (variantChildNodes.item(j).getNodeType() == Node.ELEMENT_NODE) {
                             
-                            if (infoItemChildNodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                                
-                                if (infoItemChildNodes.item(i).getNodeName().equals("variant")) {
-                                    
-                                    NodeList variantChildNodes =
-                                        infoItemChildNodes.item(i).getChildNodes();
-                                    for (int j = 0; j < variantChildNodes.getLength(); j++) {
-                                    
-                                        if (variantChildNodes.item(j).getNodeType() == Node.ELEMENT_NODE) {
-                                        
-                                            if (variantChildNodes.item(j).getNodeName().equals("value")) {
-                                            
-                                                System.out.println("value = " + variantChildNodes.item(j).getTextContent());
-                                            } else if (variantChildNodes.item(j).getNodeName().equals("count")) {
-                                            
-                                                System.out.println("count = " + variantChildNodes.item(j).getTextContent());
-                                            }
-                                        }
-                                    }
-                                }
-                                //rootChildList.add(rootChildNodes.item(i));
+                            if (variantChildNodes.item(j).getNodeName().equals("value")) {
+
+                                System.out.println("value = " + variantChildNodes.item(j).getTextContent());
+                                currentValue = variantChildNodes.item(j).getTextContent();
+                            } else if (variantChildNodes.item(j).getNodeName().equals("count")) {
+
+                                System.out.println("count = " + variantChildNodes.item(j).getTextContent());
+                                currentCount = variantChildNodes.item(j).getTextContent();
                             }
                         }
                     }
-                    default:{}
+                    switch(_field_name)
+                    {
+                        case "interest":{
+
+                            mTypicalWords.mInterestMap.put(
+                                currentValue
+                                , Integer.parseInt(currentCount)
+                            );
+                            break;
+                        }
+                        case "activity":{
+
+                            mTypicalWords.mActivityMap.put(
+                                currentValue
+                                , Integer.parseInt(currentCount)
+                            );
+                            break;
+                        }
+                        case "about":{
+
+                            mTypicalWords.mAboutMap.put(
+                                currentValue
+                                , Integer.parseInt(currentCount)
+                            );
+                            break;
+                        }
+                        case "political":{
+
+                            mTypicalWords.mPoliticalMap.put(
+                                Integer.parseInt(currentValue)
+                                , Integer.parseInt(currentCount)
+                            );
+                            break;
+                        }
+                        case "religion":{
+
+                            mTypicalWords.mReligionMap.put(
+                                currentValue
+                                , Integer.parseInt(currentCount)
+                            );
+                            break;
+                        }
+                        case "inspiredby":{
+
+                            mTypicalWords.mInspiredByMap.put(
+                                currentValue
+                                , Integer.parseInt(currentCount)
+                            );
+                            break;
+                        }
+                        case "peoplemain":{
+
+                            mTypicalWords.mPeopleMainMap.put(
+                                Integer.parseInt(currentValue)
+                                , Integer.parseInt(currentCount)
+                            );
+                            break;
+                        }
+                        case "lifemain":{
+
+                            mTypicalWords.mLifeMainMap.put(
+                                Integer.parseInt(currentValue)
+                                , Integer.parseInt(currentCount)
+                            );
+                            break;
+                        }
+                        case "smoking":{
+
+                            mTypicalWords.mSmokingMap.put(
+                                Integer.parseInt(currentValue)
+                                , Integer.parseInt(currentCount)
+                            );
+                            break;
+                        }
+                        case "alcohol":{
+
+                            mTypicalWords.mAlcoholMap.put(
+                                Integer.parseInt(currentValue)
+                                , Integer.parseInt(currentCount)
+                            );
+                            break;
+                        }
+                        default:{}
+                    }
                 }
+                //rootChildList.add(rootChildNodes.item(i));
             }
-            
-        } catch (Exception e) {
         }
-        
-        return null;
     }
 }
