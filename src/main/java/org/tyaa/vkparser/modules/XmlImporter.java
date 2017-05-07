@@ -73,7 +73,7 @@ public class XmlImporter
                 //switch(currentNode.){
                     
                 //}
-                System.out.println(currentNode.getNodeName());
+                //System.out.println(currentNode.getNodeName());
                 String infoItemName = currentNode.getNodeName();
                 NodeList infoItemChildNodes = currentNode.getChildNodes();
                 
@@ -110,11 +110,11 @@ public class XmlImporter
                             
                             if (variantChildNodes.item(j).getNodeName().equals("value")) {
 
-                                System.out.println("value = " + variantChildNodes.item(j).getTextContent());
+                                //System.out.println("value = " + variantChildNodes.item(j).getTextContent());
                                 currentValue = variantChildNodes.item(j).getTextContent();
                             } else if (variantChildNodes.item(j).getNodeName().equals("count")) {
 
-                                System.out.println("count = " + variantChildNodes.item(j).getTextContent());
+                                //System.out.println("count = " + variantChildNodes.item(j).getTextContent());
                                 currentCount = variantChildNodes.item(j).getTextContent();
                             }
                         }

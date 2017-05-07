@@ -19,16 +19,19 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.tyaa.vkparser.model.TypicalWords;
+import org.tyaa.vkparser.model.VKCandidate;
 import org.tyaa.vkparser.model.VKUser;
 
 import org.tyaa.vkparser.modules.JsonFetcher;
 import org.tyaa.vkparser.modules.JsonParser;
 import org.tyaa.vkparser.modules.XmlExporter;
 import org.tyaa.vkparser.modules.XmlImporter;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -42,11 +45,19 @@ public class Main
      */
     public static void main(String[] args)
     {
-        try {
-            //buildModel();
-            //findByModel();
-            TypicalWords typicalWords =
-                XmlImporter.getTypicalWords("TypicalWords.xml");
+        //buildModel();
+        findByModel();
+        out.println("Complete");
+        /*try {
+            
+            TypicalWords typicalWords = null;
+            try {
+                typicalWords = XmlImporter.getTypicalWords("TypicalWords.xml");
+            } catch (SAXException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParserConfigurationException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
             for (Map.Entry<String, Integer> interestItem : typicalWords.mInterestMap.entrySet()) {
 
@@ -61,12 +72,14 @@ public class Main
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (XMLStreamException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }
     
     public static void findByModel()
     {
         out.println("*** Find users by model ***");
+        
+        List<VKCandidate> candidatesList = new ArrayList();
         
         VKUser vKUser = null;
         
@@ -76,7 +89,7 @@ public class Main
         JsonParser jsonParser = new JsonParser();
         
         jsonString = jsonFetcher.fetchByUrl(
-            "https://api.vk.com/method/users.search?access_token=5e8976369e5ba9ffa778029ccd5792e36b99c236870d62f1e4b442af1b5bdd1c360d25fa264daafb6288d&country=2&count=5"
+            "https://api.vk.com/method/users.search?access_token=5e8976369e5ba9ffa778029ccd5792e36b99c236870d62f1e4b442af1b5bdd1c360d25fa264daafb6288d&country=2&city=455&count=1000"
         );
         
         JSONArray usersItems = jsonParser.parseVKSearch(jsonString);
@@ -87,7 +100,13 @@ public class Main
         TypicalWords typicalWords = new TypicalWords();
         
         try {
-            typicalWords = XmlImporter.getTypicalWords("TypicalWords.xml");
+            try {
+                typicalWords = XmlImporter.getTypicalWords("TypicalWords.xml");
+            } catch (SAXException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParserConfigurationException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (IOException | XMLStreamException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -115,15 +134,94 @@ public class Main
 
                 vKUser = jsonParser.parseVKUser(jsonString);
                 //out.println(jsonString);
-                //out.println(vKUser);
                 
                 for (Map.Entry<String, Integer> interestItem : typicalWords.mInterestMap.entrySet()) {
                     
                     if (vKUser.getInterests().contains(interestItem.getKey())) {
-                        score++;
+                        score += interestItem.getValue();
+                    }
+                }
+                
+                for (Map.Entry<String, Integer> activityItem : typicalWords.mActivityMap.entrySet()) {
+                    
+                    if (vKUser.getActivities().contains(activityItem.getKey())) {
+                        score += activityItem.getValue();
+                    }
+                }
+                
+                for (Map.Entry<String, Integer> aboutItem : typicalWords.mAboutMap.entrySet()) {
+                    
+                    if (vKUser.getAbout().contains(aboutItem.getKey())) {
+                        score += aboutItem.getValue();
+                    }
+                }
+                
+                for (Map.Entry<Integer, Integer> politicalItem : typicalWords.mPoliticalMap.entrySet()) {
+                    
+                    if (vKUser.getPolitical().intValue() == politicalItem.getKey().intValue()) {
+                        score += politicalItem.getValue();
+                    }
+                }
+                
+                for (Map.Entry<String, Integer> religionItem : typicalWords.mReligionMap.entrySet()) {
+                    
+                    if (vKUser.getReligion().contains(religionItem.getKey())) {
+                        score += religionItem.getValue();
+                    }
+                }
+                
+                for (Map.Entry<String, Integer> inspiredItem : typicalWords.mInspiredByMap.entrySet()) {
+                    
+                    if (vKUser.getInspiredBy().contains(inspiredItem.getKey())) {
+                        score += inspiredItem.getValue();
+                    }
+                }
+                
+                for (Map.Entry<Integer, Integer> peopleItem : typicalWords.mPeopleMainMap.entrySet()) {
+                    
+                    if (vKUser.getPeopleMain().intValue() == peopleItem.getKey().intValue()) {
+                        score += peopleItem.getValue();
+                    }
+                }
+                
+                for (Map.Entry<Integer, Integer> lifeMainItem : typicalWords.mLifeMainMap.entrySet()) {
+                    
+                    if (vKUser.getLifeMain().intValue() == lifeMainItem.getKey().intValue()) {
+                        score += lifeMainItem.getValue();
+                    }
+                }
+                
+                for (Map.Entry<Integer, Integer> smokingItem : typicalWords.mSmokingMap.entrySet()) {
+                    
+                    if (vKUser.getSmoking().intValue() == smokingItem.getKey().intValue()) {
+                        score += smokingItem.getValue();
+                    }
+                }
+                
+                for (Map.Entry<Integer, Integer> alcoholItem : typicalWords.mAlcoholMap.entrySet()) {
+                    
+                    if (vKUser.getAlcohol().intValue() == alcoholItem.getKey().intValue()) {
+                        score += alcoholItem.getValue();
                     }
                 }
 
+                if (score != 0) {
+                                        
+                    /*out.println(((JSONObject)usersItems.get(i)).get("uid"));
+                    out.println(((JSONObject)usersItems.get(i)).get("first_name"));
+                    out.println(((JSONObject)usersItems.get(i)).get("last_name"));
+                    out.println(score);
+                    out.println();*/
+                    
+                    VKCandidate vKCandidate = new VKCandidate();
+                    vKCandidate.setUID((Integer) ((JSONObject)usersItems.get(i)).get("uid"));
+                    vKCandidate.setFirstName((String) ((JSONObject)usersItems.get(i)).get("first_name"));
+                    vKCandidate.setLastName((String) ((JSONObject)usersItems.get(i)).get("last_name"));
+                    vKCandidate.setScore(score);
+                    
+                    candidatesList.add(vKCandidate);
+                }
+                
                 /*if(!vKUser.getInterests().equals("")){
 
                     String tmp = vKUser.getInterests().replace(", ", " ");
@@ -132,11 +230,19 @@ public class Main
                     interestsList.addAll(Arrays.asList(tmp.split(" ")));
                 }*/
             }
+            candidatesList.sort((o1, o2) ->
+                o2.getScore().compareTo(o1.getScore()));
+            
+            candidatesList.stream().forEach((vKCandidate) -> {
+                
+                out.println(vKCandidate.getUID());
+                out.println(vKCandidate.getFirstName());
+                out.println(vKCandidate.getLastName());
+                out.println(vKCandidate.getScore());
+                out.println();
+            });
         }
-        
         //out.println(jsonString);
-        
-        
     }
     
     public static void buildModel()
