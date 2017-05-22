@@ -55,10 +55,6 @@
       <value>интеллекта</value>
       <count>3</count>
     </variant>
-    <variant id="6">
-      <value>кпрф</value>
-      <count>4</count>
-    </variant>
     <variant id="7">
       <value>жизнь</value>
       <count>4</count>
@@ -137,14 +133,6 @@
     </variant>
   </political>
   <religion>
-    <variant id="0">
-      <value>православие</value>
-      <count>31</count>
-    </variant>
-    <variant id="1">
-      <value>ультрарадикальный</value>
-      <count>4</count>
-    </variant>
     <variant id="2">
       <value>буддизм</value>
       <count>4</count>
@@ -152,14 +140,6 @@
     <variant id="3">
       <value>атеист</value>
       <count>8</count>
-    </variant>
-    <variant id="4">
-      <value>гуманизм</value>
-      <count>12</count>
-    </variant>
-    <variant id="5">
-      <value>ислам</value>
-      <count>3</count>
     </variant>
     <variant id="6">
       <value>диалектический</value>
@@ -172,10 +152,6 @@
     <variant id="8">
       <value>атеизм</value>
       <count>8</count>
-    </variant>
-    <variant id="9">
-      <value>светский</value>
-      <count>13</count>
     </variant>
   </religion>
   <inspiredby>
@@ -194,14 +170,6 @@
     <variant id="3">
       <value>любовь</value>
       <count>4</count>
-    </variant>
-    <variant id="4">
-      <value>коло</value>
-      <count>4</count>
-    </variant>
-    <variant id="5">
-      <value>родина</value>
-      <count>2</count>
     </variant>
     <variant id="6">
       <value>новые</value>
