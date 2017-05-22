@@ -19,6 +19,11 @@ import org.tyaa.vkparser.model.VKUser;
 public class JsonParser
 {
     public VKUser parseVKUser(String _jsonString){
+        
+        //_jsonString = _jsonString.replaceAll("[^a-zA-ZА-Яа-я0-9]+", " ");
+        //_jsonString = _jsonString.replace("\\t", " ");
+        //_jsonString = _jsonString.replace("\\r", " ");
+        System.out.println(_jsonString);
     
         JSONObject dataJsonObj = null;
         VKUser vKUser = new VKUser();

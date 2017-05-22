@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import org.tyaa.vkparser.model.TypicalWords;
 import org.tyaa.vkparser.model.VKCandidate;
 import org.tyaa.vkparser.model.VKUser;
+import org.tyaa.vkparser.modules.ExcelSaver;
 
 import org.tyaa.vkparser.modules.JsonFetcher;
 import org.tyaa.vkparser.modules.JsonParser;
@@ -48,31 +49,6 @@ public class Main
         //buildModel();
         findByModel();
         out.println("Complete");
-        /*try {
-            
-            TypicalWords typicalWords = null;
-            try {
-                typicalWords = XmlImporter.getTypicalWords("TypicalWords.xml");
-            } catch (SAXException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ParserConfigurationException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            for (Map.Entry<String, Integer> interestItem : typicalWords.mInterestMap.entrySet()) {
-
-                out.println(interestItem.getKey() + "  " + interestItem.getValue());
-            }
-            for (Map.Entry<Integer, Integer> alcoholItem : typicalWords.mAlcoholMap.entrySet()) {
-
-                out.println(alcoholItem.getKey() + "  " + alcoholItem.getValue());
-            }
-            
-        } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (XMLStreamException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
     }
     
     public static void findByModel()
@@ -241,6 +217,13 @@ public class Main
                 out.println(vKCandidate.getScore());
                 out.println();
             });
+            
+            ExcelSaver es = new ExcelSaver();
+            try {
+                es.saveCandidates(candidatesList);
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         //out.println(jsonString);
     }
