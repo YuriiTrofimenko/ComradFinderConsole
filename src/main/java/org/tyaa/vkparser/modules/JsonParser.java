@@ -12,6 +12,8 @@ import org.tyaa.vkparser.model.VKUser;
 
 /**
  *
+ * Заполнение модели участника группы из данных json-строки
+ * 
  * @author Юрий
  */
 public class JsonParser

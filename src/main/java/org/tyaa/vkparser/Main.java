@@ -5,7 +5,6 @@
  */
 package org.tyaa.vkparser;
 
-
 import java.io.*;
 import static java.lang.System.out;
 import java.util.logging.Level;
@@ -14,7 +13,9 @@ import org.tyaa.vkparser.modules.facades.ComradFinder;
 import org.tyaa.vkparser.modules.facades.ModelBuilder;
 
 /**
- *
+ * Консольный концепт поисковика ссылок на страницы пользователей ВК -
+ * потенциальных кандидатов на приглашение в заданную группу
+ * 
  * @author Юрий
  */
 public class Main
@@ -24,19 +25,26 @@ public class Main
      * @param args the command line arguments
      */
     
+    //Флаг "полоса прогресса отображается"
     private static volatile boolean cmLoading = false;
     
+    //Точка входа
     public static void main(String[] args)
     {
-        //buildModel();
-        //findByModel();
+        //Поток ввода из консоли
         BufferedReader bufferedReader =
             new BufferedReader(new InputStreamReader(System.in));
+        
+        out.println();
+        
         out.println("Comrad finder console v1.00");
         
         out.println();
-        out.print("Enter group id: ");
+        out.print("Input group id: ");
         String groupIdString = "";
+        
+        //Получение от пользователя id группы ВК для исследования текстов
+        //ее участников
         try {
             groupIdString = bufferedReader.readLine();
         } catch (IOException ex) {
@@ -45,6 +53,7 @@ public class Main
         
         out.println();
         
+        //Начинаем отображение полосы прогресса
         cmLoading = true;
         try {
             loading("Model creating...");
@@ -53,7 +62,14 @@ public class Main
         } catch (InterruptedException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        //Получаем текстовую информацию со страниц участников групы
+        //в формате json, определение частотности
+        //слов в различных разделах личной информации
+        //и сохранение результатов в файл xml
         ModelBuilder.buildModel(groupIdString);
+        
+        //Завершаем отображение полосы прогресса
         cmLoading = false;
         
         try {
@@ -64,8 +80,10 @@ public class Main
         
         out.println();
         
-        out.print("Enter country id: ");
+        out.print("Input country id: ");
         String countryIdString = "";
+        //Получение от пользователя ВК-id  страны,
+        //по которой будет происходить поиск кандидатов
         try {
             countryIdString = bufferedReader.readLine();
         } catch (IOException ex) {
@@ -74,8 +92,10 @@ public class Main
         
         out.println();
         
-        out.print("Enter city id: ");
+        out.print("Input city id: ");
         String cityIdString = "";
+        //Получение от пользователя ВК-id  города,
+        //по которому будет происходить поиск кандидатов
         try {
             cityIdString = bufferedReader.readLine();
         } catch (IOException ex) {
@@ -92,6 +112,9 @@ public class Main
         } catch (InterruptedException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
+        //Поиск кандидатов на приглашение с сохранением таблицы
+        //результатов в файл Excel по жестко заданному пути 
+        //C:/VKParserDoc/ExcellResults/
         ComradFinder.findByModel(countryIdString, cityIdString);
         cmLoading = false;
         try {
@@ -110,6 +133,7 @@ public class Main
         }
     }
     
+    //Метод отображения полосы прогресса на время длительных операций
     private static synchronized void loading(String msg) throws IOException, InterruptedException {
         
         System.out.println(msg);

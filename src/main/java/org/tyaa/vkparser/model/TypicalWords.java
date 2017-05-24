@@ -10,6 +10,8 @@ import java.util.Map;
 
 /**
  *
+ * Модель слов, часто встречающихся на страницах участников группы
+ * 
  * @author Юрий
  */
 public class TypicalWords

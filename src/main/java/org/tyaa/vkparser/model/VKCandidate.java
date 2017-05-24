@@ -7,6 +7,8 @@ package org.tyaa.vkparser.model;
 
 /**
  *
+ * Модель кандидата на приглашение в группу
+ * 
  * @author Юрий
  */
 public class VKCandidate

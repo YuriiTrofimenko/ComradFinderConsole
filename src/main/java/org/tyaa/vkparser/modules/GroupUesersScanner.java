@@ -12,21 +12,21 @@ import org.jsoup.nodes.Document;
 
 /**
  *
+ * Заготовка на будущее:
+ * загрузчик разметки веб-страницы по указанному адресу
+ * (для дальнейшего парсинга при помощи библиотеки Jsoup)
+ * 
  * @author Юрий
  */
 public class GroupUesersScanner
-{
-    //private Document mGroupDocument;
-    
-    // https://api.vk.com/method/groups.getMembers?group_id=tehnokom_su&offset=0&count=20&version=5.62
-    
+{        
     private Document getDocumentByUrl(String _urlString){
         
         Document document = null;
     
         try{
 
-            document = Jsoup.connect("http://www.bash.im/").get();
+            document = Jsoup.connect("http://www.test/").get();
         }catch(IOException e){
 
             out.println("Error: group page has not loaded");

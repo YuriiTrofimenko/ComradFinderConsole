@@ -5,13 +5,8 @@
  */
 package org.tyaa.vkparser.modules;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Map.Entry;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-import javanet.staxutils.IndentingXMLStreamWriter;
 import org.tyaa.vkparser.model.TypicalWords;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,7 +14,6 @@ import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
-import org.w3c.dom.Element;
 import java.io.File;
 import java.util.ArrayList;
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,6 +21,9 @@ import org.xml.sax.SAXException;
 
 /**
  *
+ * Заполнение текстовой модели совокупного пользователя группы
+ * из файла формата XML из той же директории, что и исполняемый файл приложения
+ * 
  * @author Юрий
  */
 public class XmlImporter
@@ -58,22 +55,8 @@ public class XmlImporter
                 }
             }
             
-//            Node interestNode = rootChildNodes.item(0);
-//            Node activityNode = rootChildNodes.item(1);
-//            Node aboutNode = rootChildNodes.item(2);
-//            Node politicalNode = rootChildNodes.item(3);
-//            Node religionNode = rootChildNodes.item(4);
-//            Node inspiredbyNode = rootChildNodes.item(5);
-//            Node peoplemainNode = rootChildNodes.item(6);
-//            Node lifemainNode = rootChildNodes.item(7);
-//            Node smokingNode = rootChildNodes.item(8);
-//            Node alcoholNode = rootChildNodes.item(9);
-            
             for (Node currentNode : rootChildList) {
-                //switch(currentNode.){
-                    
-                //}
-                //System.out.println(currentNode.getNodeName());
+
                 String infoItemName = currentNode.getNodeName();
                 NodeList infoItemChildNodes = currentNode.getChildNodes();
                 

@@ -28,6 +28,8 @@ import org.xml.sax.SAXException;
 
 /**
  *
+ * Поиск кандидатов по модели
+ * 
  * @author Yurii
  */
 public class ComradFinder {
@@ -44,6 +46,8 @@ public class ComradFinder {
         String jsonString = "";
         JsonFetcher jsonFetcher = new JsonFetcher();
         JsonParser jsonParser = new JsonParser();
+        //Получаем информацию о первой тысяче пользователей
+        //с заданными страной и городом
         /* tested with parameters values country=2&city=455*/
         jsonString = jsonFetcher.fetchByUrl(
             "https://api.vk.com/method/users.search?access_token=5e8976369e5ba9ffa778029ccd5792e36b99c236870d62f1e4b442af1b5bdd1c360d25fa264daafb6288d&country=2&city=455&count=1000"
@@ -52,10 +56,8 @@ public class ComradFinder {
         JSONArray usersItems = jsonParser.parseVKSearch(jsonString);
         /************************************************/
         
-        /*Читаем набор типичных слов из файла XML в Java объект*/
-        
+        //Читаем набор типичных слов из файла XML в Java объект
         TypicalWords typicalWords = new TypicalWords();
-        
         try {
             try {
                 typicalWords = XmlImporter.getTypicalWords("TypicalWords.xml");
@@ -81,6 +83,7 @@ public class ComradFinder {
                     //(JSONObject)((JSONArray)usersItems.get(i)).get(0);
                 //out.println(userId);
 
+                //Получаем более полную информацию о текущем пользователе
                 jsonString = jsonFetcher.fetchByUrl(
                     "https://api.vk.com/method/users.get"
                     +"?user_ids="
@@ -89,8 +92,14 @@ public class ComradFinder {
                 );
                 //out.println(jsonString);
 
+                //Переводим информацию о пользователе из json в 
                 vKUser = jsonParser.parseVKUser(jsonString);
                 //out.println(jsonString);
+                
+                //Проверяем тексты разделов личной информации пользователя
+                //на наличие слова из соответствующего раздела модели
+                //Если нашли - добавляем баллы (частоту встречи этого слова в 
+                //разделе модели)
                 
                 for (Map.Entry<String, Integer> interestItem : typicalWords.mInterestMap.entrySet()) {
                     
@@ -162,13 +171,9 @@ public class ComradFinder {
                     }
                 }
 
+                //Если набранные пользователем баллы больше нуля,
+                //заносим его в кандидаты на приглашение
                 if (score != 0) {
-                                        
-                    /*out.println(((JSONObject)usersItems.get(i)).get("uid"));
-                    out.println(((JSONObject)usersItems.get(i)).get("first_name"));
-                    out.println(((JSONObject)usersItems.get(i)).get("last_name"));
-                    out.println(score);
-                    out.println();*/
                     
                     VKCandidate vKCandidate = new VKCandidate();
                     vKCandidate.setUID((Integer) ((JSONObject)usersItems.get(i)).get("uid"));
@@ -178,14 +183,6 @@ public class ComradFinder {
                     
                     candidatesList.add(vKCandidate);
                 }
-                
-                /*if(!vKUser.getInterests().equals("")){
-
-                    String tmp = vKUser.getInterests().replace(", ", " ");
-                    //tmp = tmp.replace("??", "и");
-                    tmp = tmp.replace("\n\n", " ");
-                    interestsList.addAll(Arrays.asList(tmp.split(" ")));
-                }*/
             }
             candidatesList.sort((o1, o2) ->
                 o2.getScore().compareTo(o1.getScore()));
@@ -199,6 +196,7 @@ public class ComradFinder {
                 out.println();
             });*/
             
+            //Сохраняем результаты в таблицу
             ExcelSaver es = new ExcelSaver();
             try {
                 es.saveCandidates(candidatesList);

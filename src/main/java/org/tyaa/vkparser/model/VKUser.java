@@ -7,17 +7,24 @@ package org.tyaa.vkparser.model;
 
 /**
  *
+ * Модель участника группы
+ * 
  * @author Юрий
  */
 public class VKUser
 {
+    //Текст из поля Интересы
     private String mInterests;
+    //Текст из поля Деятельность
     private String mActivities;
+    //Текст из поля О себе
     private String mAbout;
-    
+    //Id варианта, выбранного в поле Полит. предпочтения
     private Integer mPolitical;
+    //...
     private String mReligion;
     private String mInspiredBy;
+    //...
     private Integer mPeopleMain;
     private Integer mLifeMain;
     private Integer mSmoking;

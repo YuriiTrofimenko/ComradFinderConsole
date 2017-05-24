@@ -16,6 +16,9 @@ import org.tyaa.vkparser.model.TypicalWords;
 
 /**
  *
+ * Сохранение текстовой модели совокупного пользователя группы
+ * в файл формата XML в той же директории, что и исполняемый файл приложения
+ * 
  * @author Юрий
  */
 public class XmlExporter

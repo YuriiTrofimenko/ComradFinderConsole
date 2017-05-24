@@ -11,6 +11,9 @@ import org.tyaa.vkparser.model.VKCandidate;
 
 /**
  *
+ * Интерфейс сохранения результатов
+ * (реализации можно осуществлять на базе различных технологий)
+ * 
  * @author Юрий
  */
 public interface IResultSaver {

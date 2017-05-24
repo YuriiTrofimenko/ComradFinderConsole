@@ -14,6 +14,8 @@ import org.unbescape.html.HtmlEscape;
 
 /**
  *
+ * Получение json-данных по заданному адресу
+ * 
  * @author Юрий
  */
 public class JsonFetcher
@@ -43,10 +45,6 @@ public class JsonFetcher
             }
 
             jsonString = HtmlEscape.unescapeHtml(buffer.toString());
-            //jsonString = jsonString.replace("?", "");
-            //byte[] b = jsonString.getBytes("UTF-8");
-            //jsonString = new String(jsonString.getBytes("Cp1251"),"UTF-8");
-
         } catch (Exception e) {
             e.printStackTrace();
         }

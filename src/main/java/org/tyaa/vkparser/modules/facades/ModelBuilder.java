@@ -25,6 +25,8 @@ import org.tyaa.vkparser.modules.XmlExporter;
 
 /**
  *
+ * Построение текстовой модели совокупного пользователя группы
+ * 
  * @author Yurii
  */
 public class ModelBuilder {
@@ -50,12 +52,13 @@ public class ModelBuilder {
         List smokingList = new ArrayList<>();
         List alcoholList = new ArrayList<>();
         
+        //Получаем список идентификаторов пользователей указанной группы ВК
         /* tested with parameter value tehnokom_su*/
         jsonString = jsonFetcher.fetchByUrl(
             "https://api.vk.com/method/groups.getMembers?group_id=" + _groupId
         );
         JSONArray usersIds = jsonParser.parseVKGroup(jsonString);
-        //перебираем
+        //перебираем userId
         for (int i = 0; i < usersIds.length(); i++) {
             
             //if (i > 5) break;
@@ -63,6 +66,7 @@ public class ModelBuilder {
             String userId = usersIds.get(i).toString();
             //out.println(usersIds.get(i));
 
+            //Получаем более полную информацию о текущем пользователе
             jsonString = jsonFetcher.fetchByUrl(
                 "https://api.vk.com/method/users.get"
                 +"?user_ids="
@@ -75,10 +79,11 @@ public class ModelBuilder {
             //out.println(jsonString);
             //out.println(vKUser);
             
+            //Разбиваем текст на слова и добавляем их в список слов
+            //соответствующего раздела
             if(!vKUser.getInterests().equals("")){
             
                 String tmp = vKUser.getInterests().replace(", ", " ");
-                //tmp = tmp.replace("??", "и");
                 tmp = tmp.replace("\n\n", " ");
                 interestsList.addAll(Arrays.asList(tmp.split(" ")));
             }
@@ -87,7 +92,6 @@ public class ModelBuilder {
             if(!vKUser.getActivities().equals("")){
             
                 String tmp = vKUser.getActivities().replaceAll(", ", " ");
-                //tmp = tmp.replace("??", "и");
                 tmp = tmp.replace("\n\n", " ");
                 activitiesList.addAll(Arrays.asList(tmp.split(" ")));
             }
@@ -96,11 +100,12 @@ public class ModelBuilder {
             if(!vKUser.getAbout().equals("")){
             
                 String tmp = vKUser.getAbout().replace(", ", " ");
-                //tmp = tmp.replace("??", "и");
                 tmp = tmp.replace("\n\n", " ");
                 aboutList.addAll(Arrays.asList(tmp.split(" ")));
             }
                 
+            //Добавляем идентификатор варианта выбора для раздела Полит. взглядов
+            //в список
             if(vKUser.getPolitical() != 0){
             
                 politicalList.add(vKUser.getPolitical());
@@ -145,6 +150,7 @@ public class ModelBuilder {
         
         /**/
         //out.println("Calculating the frequency of words... ");
+        //Вычисляем частоту каждого слова в списке типа Карта
         Iterator<String> interestsWordIterator = interestsList.iterator();
         Map<String, Integer> interestsFreqMap = new HashMap<>();
         interestsWordIterator.forEachRemaining(s -> interestsFreqMap.merge(
@@ -235,15 +241,19 @@ public class ModelBuilder {
             )
         );
         
-        /*Collect couples for the TypicalWords model*/
+        /*Заносим в модель TypicalWords списки-карты*/
         
         TypicalWords typicalWords = new TypicalWords();
         
-        typicalWords.mInterestMap = interestsFreqMap.entrySet().stream()                 // получим стрим пар (слово, частота)
+        //В каждом спике-карте отбрасываем пары слово - частота
+        //с длиной слова более трех символов,
+        //сортируем по убыванию частоты
+        //и отбираем первые десять пар
+        typicalWords.mInterestMap = interestsFreqMap.entrySet().stream() // получим стрим пар (слово, частота)
                 .filter(m -> m.getKey().length() > 3)
-                .sorted(descendingFrequencyOrder()) // отсортируем
-                .limit(10)                          // возьмем первые 10
-                .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));      // выведем в консоль
+                .sorted(descendingFrequencyOrder()) // отсортируем в обратном порядке по частоте
+                .limit(10) // возьмем первые 10
+                .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue())); // соберем в список-карту
         
         typicalWords.mActivityMap = activitiesFreqMap.entrySet().stream()
                 .filter(m -> m.getKey().length() > 3)
@@ -400,7 +410,9 @@ public class ModelBuilder {
         
         //
         try {
-            XmlExporter.TypicalWordsToXml(typicalWords, "TypicalWords.xml");//new FileWriter(,"UTF-8"));
+            
+            //Сохраняем модель в файл xml
+            XmlExporter.TypicalWordsToXml(typicalWords, "TypicalWords.xml");
         }
         catch(IOException e) {
             e.printStackTrace();
@@ -410,7 +422,7 @@ public class ModelBuilder {
         }
     }
     
-    //
+    //Метод сравнения значений частоты у разных пар-элементов списка-карты
     private static Comparator<Map.Entry<String, Integer>> descendingFrequencyOrder() {
         //
         return Comparator.<Map.Entry<String, Integer>>comparingInt(Map.Entry::getValue)

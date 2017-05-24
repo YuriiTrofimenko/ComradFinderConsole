@@ -27,6 +27,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
+ * Поиск кандидатов на приглашение с сохранением в таблицу Excel
+ * 
  * @author Yurii
  */
 public class ExcelSaver implements IResultSaver {
@@ -45,6 +47,7 @@ public class ExcelSaver implements IResultSaver {
         
         try (Workbook book = new XSSFWorkbook()) {
             
+            //Создаем лист Excel
             Sheet sheet = book.createSheet("Кандидаты на приглашение в сообщество");
             
             // Строка заголовка
