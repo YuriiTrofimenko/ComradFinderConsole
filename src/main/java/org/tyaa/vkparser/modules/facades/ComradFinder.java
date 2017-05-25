@@ -88,7 +88,7 @@ public class ComradFinder {
                     "https://api.vk.com/method/users.get"
                     +"?user_ids="
                     + userId
-                    +"&fields=about,activities,interests,personal"
+                    +"&fields=about,activities,interests,personal,books,music,movies"
                 );
                 //out.println(jsonString);
 
@@ -119,6 +119,27 @@ public class ComradFinder {
                     
                     if (vKUser.getAbout().contains(aboutItem.getKey())) {
                         score += aboutItem.getValue();
+                    }
+                }
+                
+                for (Map.Entry<String, Integer> booksItem : typicalWords.mBooksMap.entrySet()) {
+                    
+                    if (vKUser.getBooks().contains(booksItem.getKey())) {
+                        score += booksItem.getValue();
+                    }
+                }
+                
+                for (Map.Entry<String, Integer> musicItem : typicalWords.mMusicMap.entrySet()) {
+                    
+                    if (vKUser.getMusic().contains(musicItem.getKey())) {
+                        score += musicItem.getValue();
+                    }
+                }
+                
+                for (Map.Entry<String, Integer> moviesItem : typicalWords.mMoviesMap.entrySet()) {
+                    
+                    if (vKUser.getMovies().contains(moviesItem.getKey())) {
+                        score += moviesItem.getValue();
                     }
                 }
                 

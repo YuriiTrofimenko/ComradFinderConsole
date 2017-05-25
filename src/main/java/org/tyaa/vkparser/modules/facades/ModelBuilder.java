@@ -52,6 +52,10 @@ public class ModelBuilder {
         List smokingList = new ArrayList<>();
         List alcoholList = new ArrayList<>();
         
+        List booksList = new ArrayList<>();
+        List musicList = new ArrayList<>();
+        List moviesList = new ArrayList<>();
+        
         //Получаем список идентификаторов пользователей указанной группы ВК
         /* tested with parameter value tehnokom_su*/
         jsonString = jsonFetcher.fetchByUrl(
@@ -71,7 +75,7 @@ public class ModelBuilder {
                 "https://api.vk.com/method/users.get"
                 +"?user_ids="
                 + userId
-                +"&fields=about,activities,interests,personal"
+                +"&fields=about,activities,interests,personal,books,music,movies"
             );
             //out.println(jsonString);
 
@@ -102,6 +106,27 @@ public class ModelBuilder {
                 String tmp = vKUser.getAbout().replace(", ", " ");
                 tmp = tmp.replace("\n\n", " ");
                 aboutList.addAll(Arrays.asList(tmp.split(" ")));
+            }
+            
+            if(!vKUser.getBooks().equals("")){
+            
+                String tmp = vKUser.getBooks().replace(", ", " ");
+                tmp = tmp.replace("\n\n", " ");
+                booksList.addAll(Arrays.asList(tmp.split(" ")));
+            }
+            
+            if(!vKUser.getMusic().equals("")){
+            
+                String tmp = vKUser.getMusic().replace(", ", " ");
+                tmp = tmp.replace("\n\n", " ");
+                musicList.addAll(Arrays.asList(tmp.split(" ")));
+            }
+            
+            if(!vKUser.getMovies().equals("")){
+            
+                String tmp = vKUser.getMovies().replace(", ", " ");
+                tmp = tmp.replace("\n\n", " ");
+                moviesList.addAll(Arrays.asList(tmp.split(" ")));
             }
                 
             //Добавляем идентификатор варианта выбора для раздела Полит. взглядов
@@ -172,6 +197,33 @@ public class ModelBuilder {
         Iterator<String> aboutWordIterator = aboutList.iterator();
         Map<String, Integer> aboutFreqMap = new HashMap<>();
         aboutWordIterator.forEachRemaining(s -> aboutFreqMap.merge(
+                s.toLowerCase()
+                , 1
+                , (a, b) -> a + b
+            )
+        );
+        
+        Iterator<String> booksWordIterator = booksList.iterator();
+        Map<String, Integer> booksFreqMap = new HashMap<>();
+        booksWordIterator.forEachRemaining(s -> booksFreqMap.merge(
+                s.toLowerCase()
+                , 1
+                , (a, b) -> a + b
+            )
+        );
+        
+        Iterator<String> musicWordIterator = musicList.iterator();
+        Map<String, Integer> musicFreqMap = new HashMap<>();
+        musicWordIterator.forEachRemaining(s -> musicFreqMap.merge(
+                s.toLowerCase()
+                , 1
+                , (a, b) -> a + b
+            )
+        );
+        
+        Iterator<String> moviesWordIterator = moviesList.iterator();
+        Map<String, Integer> moviesFreqMap = new HashMap<>();
+        moviesWordIterator.forEachRemaining(s -> moviesFreqMap.merge(
                 s.toLowerCase()
                 , 1
                 , (a, b) -> a + b
@@ -262,6 +314,24 @@ public class ModelBuilder {
                 .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));
         
         typicalWords.mAboutMap = aboutFreqMap.entrySet().stream()
+                .filter(m -> m.getKey().length() > 3)
+                .sorted(descendingFrequencyOrder())
+                .limit(10)
+                .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));
+        
+        typicalWords.mBooksMap = booksFreqMap.entrySet().stream()
+                .filter(m -> m.getKey().length() > 3)
+                .sorted(descendingFrequencyOrder())
+                .limit(10)
+                .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));
+        
+        typicalWords.mMusicMap = musicFreqMap.entrySet().stream()
+                .filter(m -> m.getKey().length() > 3)
+                .sorted(descendingFrequencyOrder())
+                .limit(10)
+                .collect(Collectors.toMap(m -> m.getKey(), m -> m.getValue()));
+        
+        typicalWords.mMoviesMap = moviesFreqMap.entrySet().stream()
                 .filter(m -> m.getKey().length() > 3)
                 .sorted(descendingFrequencyOrder())
                 .limit(10)

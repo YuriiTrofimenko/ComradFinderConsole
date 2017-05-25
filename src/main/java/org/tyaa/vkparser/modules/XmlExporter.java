@@ -92,6 +92,51 @@ public class XmlExporter
                     }
                     xsw.writeEndElement();
                     count = 0;
+                    xsw.writeStartElement("books");
+                    for(Entry<String, Integer> variantEntry : _typicalWords.mBooksMap.entrySet()) {
+                        xsw.writeStartElement("variant");
+                            xsw.writeAttribute("id", count.toString());
+                            xsw.writeStartElement("value");
+                                xsw.writeCharacters(variantEntry.getKey());
+                            xsw.writeEndElement();
+                            xsw.writeStartElement("count");
+                                xsw.writeCharacters(variantEntry.getValue().toString());
+                            xsw.writeEndElement();
+                        xsw.writeEndElement();
+                        count++;
+                    }
+                    xsw.writeEndElement();
+                    count = 0;
+                    xsw.writeStartElement("music");
+                    for(Entry<String, Integer> variantEntry : _typicalWords.mMusicMap.entrySet()) {
+                        xsw.writeStartElement("variant");
+                            xsw.writeAttribute("id", count.toString());
+                            xsw.writeStartElement("value");
+                                xsw.writeCharacters(variantEntry.getKey());
+                            xsw.writeEndElement();
+                            xsw.writeStartElement("count");
+                                xsw.writeCharacters(variantEntry.getValue().toString());
+                            xsw.writeEndElement();
+                        xsw.writeEndElement();
+                        count++;
+                    }
+                    xsw.writeEndElement();
+                    count = 0;
+                    xsw.writeStartElement("movies");
+                    for(Entry<String, Integer> variantEntry : _typicalWords.mMoviesMap.entrySet()) {
+                        xsw.writeStartElement("variant");
+                            xsw.writeAttribute("id", count.toString());
+                            xsw.writeStartElement("value");
+                                xsw.writeCharacters(variantEntry.getKey());
+                            xsw.writeEndElement();
+                            xsw.writeStartElement("count");
+                                xsw.writeCharacters(variantEntry.getValue().toString());
+                            xsw.writeEndElement();
+                        xsw.writeEndElement();
+                        count++;
+                    }
+                    xsw.writeEndElement();
+                    count = 0;
                     xsw.writeStartElement("political");
                     for(Entry<Integer, Integer> variantEntry : _typicalWords.mPoliticalMap.entrySet()) {
                         xsw.writeStartElement("variant");

@@ -13,6 +13,8 @@ package org.tyaa.vkparser.model;
  */
 public class VKUser
 {
+    /*информация о полях из раздела «Жизненная позиция»*/
+    
     //Текст из поля Интересы
     private String mInterests;
     //Текст из поля Деятельность
@@ -30,6 +32,15 @@ public class VKUser
     private Integer mSmoking;
     private Integer mAlcohol;
     
+    /*содержимое поля «Любимые книги» из профиля пользователя*/
+    private String mBooks;
+    
+    /*содержимое поля «Любимая музыка» из профиля пользователя*/
+    private String mMusic;
+    
+    /*содержимое поля «Любимые фильмы» из профиля пользователя*/
+    private String mMovies;
+    
     public VKUser(){
     
         mInterests = "";
@@ -43,6 +54,10 @@ public class VKUser
         mLifeMain = 0;
         mSmoking = 0;
         mAlcohol = 0;
+        
+        mBooks = "";
+        mMusic = "";
+        mMovies = "";
     }
 
     public String getInterests()
@@ -143,5 +158,29 @@ public class VKUser
     public void setAlcohol(Integer _alcohol)
     {
         this.mAlcohol = _alcohol;
+    }
+
+    public String getBooks() {
+        return mBooks;
+    }
+
+    public void setBooks(String _books) {
+        this.mBooks = _books;
+    }
+
+    public String getMusic() {
+        return mMusic;
+    }
+
+    public void setMusic(String _music) {
+        this.mMusic = _music;
+    }
+
+    public String getMovies() {
+        return mMovies;
+    }
+
+    public void setMovies(String _movies) {
+        this.mMovies = _movies;
     }
 }

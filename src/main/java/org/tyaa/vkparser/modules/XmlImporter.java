@@ -128,6 +128,30 @@ public class XmlImporter
                             );
                             break;
                         }
+                        case "books":{
+
+                            mTypicalWords.mBooksMap.put(
+                                currentValue
+                                , Integer.parseInt(currentCount)
+                            );
+                            break;
+                        }
+                        case "music":{
+
+                            mTypicalWords.mBooksMap.put(
+                                currentValue
+                                , Integer.parseInt(currentCount)
+                            );
+                            break;
+                        }
+                        case "movies":{
+
+                            mTypicalWords.mBooksMap.put(
+                                currentValue
+                                , Integer.parseInt(currentCount)
+                            );
+                            break;
+                        }
                         case "political":{
 
                             mTypicalWords.mPoliticalMap.put(

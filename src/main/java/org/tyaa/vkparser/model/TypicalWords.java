@@ -28,6 +28,10 @@ public class TypicalWords
     public Map<Integer, Integer> mSmokingMap;
     public Map<Integer, Integer> mAlcoholMap;
     
+    public Map<String, Integer> mBooksMap;
+    public Map<String, Integer> mMusicMap;
+    public Map<String, Integer> mMoviesMap;
+    
     public TypicalWords(){
     
         mInterestMap = new HashMap<>();
@@ -41,5 +45,9 @@ public class TypicalWords
         mLifeMainMap = new HashMap<>();
         mSmokingMap = new HashMap<>();
         mAlcoholMap = new HashMap<>();
+        
+        mBooksMap = new HashMap<>();
+        mMusicMap = new HashMap<>();
+        mMoviesMap = new HashMap<>();
     }
 }

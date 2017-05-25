@@ -36,6 +36,13 @@ public class JsonParser
             if(userDataJSONObject.has("about"))
                 vKUser.setAbout(userDataJSONObject.getString("about"));
             
+            if(userDataJSONObject.has("books"))
+                vKUser.setBooks(userDataJSONObject.getString("books"));
+            if(userDataJSONObject.has("music"))
+                vKUser.setMusic(userDataJSONObject.getString("music"));
+            if(userDataJSONObject.has("movies"))
+                vKUser.setMovies(userDataJSONObject.getString("movies"));
+            
             if(userDataJSONObject.has("personal")){
             
                 JSONObject personalJSONObject =
