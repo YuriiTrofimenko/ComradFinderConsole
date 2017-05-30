@@ -104,6 +104,30 @@ public class Main
         
         out.println();
         
+        out.print("Input age (from 14 to 80): ");
+        String ageString = "";
+        //Получение от пользователя age,
+        //по которому будет происходить поиск кандидатов
+        try {
+            ageString = bufferedReader.readLine();
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        out.println();
+        
+        out.print("Input sex (1 - female or 2 - male): ");
+        String sexString = "";
+        //Получение от пользователя sex,
+        //по которому будет происходить поиск кандидатов
+        try {
+            sexString = bufferedReader.readLine();
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        out.println();
+        
         cmLoading = true;
         try {
             loading("Searching...");
@@ -115,7 +139,7 @@ public class Main
         //Поиск кандидатов на приглашение с сохранением таблицы
         //результатов в файл Excel по жестко заданному пути 
         //C:/VKParserDoc/ExcellResults/
-        ComradFinder.findByModel(countryIdString, cityIdString);
+        ComradFinder.findByModel(countryIdString, cityIdString, ageString, sexString);
         cmLoading = false;
         try {
             Thread.sleep(1000);
